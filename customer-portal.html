@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ETNIA Eyewear — Customer Portal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0e0e0e;
+      --white:   #faf8f5;
+      --cream:   #f2ede4;
+
+      /* Etnia frame-inspired jewel palette */
+      --cobalt:  #1D4FBF;
+      --cobalt-dark: #153A96;
+      --cobalt-light: #EEF3FF;
+
+      --coral:   #D44232;
+      --coral-dark: #A83225;
+      --coral-light: #FFF0EE;
+
+      --emerald: #1A7050;
+      --emerald-dark: #125438;
+      --emerald-light: #EDFAF4;
+
+      --amber:   #D97C18;
+      --amber-dark: #A85E10;
+      --amber-light: #FFF8EC;
+
+      --violet:  #6532A8;
+      --violet-dark: #4C2480;
+      --violet-light: #F5EEFF;
+
+      --teal:    #1A7878;
+      --teal-dark: #115454;
+
+      --gray-light: #e4dfd6;
+      --gray-mid:   #a09890;
+      --gray-dark:  #4a4540;
+
+      --section-gap: 80px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 64px;
+      /* Prismatic accent strip at the bottom — like light through a lens */
+      border-bottom: 3px solid transparent;
+      border-image: linear-gradient(
+        to right,
+        var(--cobalt) 0%,
+        var(--violet) 25%,
+        var(--coral) 50%,
+        var(--amber) 75%,
+        var(--emerald) 100%
+      ) 1;
+    }
+
+    .nav-logo {
+      color: var(--white);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--gray-mid);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    /* ── HERO ────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #111A3D 0%, #1D1440 40%, #2D0E24 100%);
+      color: var(--white);
+      padding: 96px 40px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative color blobs — frame-lens refraction effect */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,79,191,0.35) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: 30%;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,66,50,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .hero h1 strong { font-weight: 700; }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+      position: relative; /* above the pseudo-element blobs */
+    }
+
+    .hero-meta p { margin-bottom: 6px; }
+
+    .hero-meta span { color: var(--white); }
+
+    /* Colorful divider strip */
+    .hero-divider {
+      grid-column: 1 / -1;
+      height: 3px;
+      background: linear-gradient(
+        to right,
+        var(--cobalt),
+        var(--violet),
+        var(--coral),
+        var(--amber),
+        var(--emerald)
+      );
+      margin-top: 24px;
+      border-radius: 2px;
+    }
+
+    /* ── SECTION SHELL ───────────────────────────────── */
+    section { padding: var(--section-gap) 40px; }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      margin-bottom: 40px;
+    }
+
+    /* ── INFO ────────────────────────────────────────── */
+    #info {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    #info .section-label { color: var(--cobalt); }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .info-card {
+      color: var(--white);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card.cobalt   { background: var(--cobalt); }
+    .info-card.coral    { background: var(--coral); }
+    .info-card.emerald  { background: var(--emerald); }
+
+    /* Diagonal light-refraction stripe */
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+
+    /* Sliding bottom border on hover */
+    .info-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 3px;
+      width: 0;
+      background: rgba(255,255,255,0.5);
+      transition: width 0.35s ease;
+    }
+
+    .info-card:hover::after { width: 100%; }
+
+    .info-card h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 14px;
+    }
+
+    .info-card p {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.75;
+    }
+
+    /* ── GALLERY ─────────────────────────────────────── */
+    #gallery {
+      background: var(--black);
+      padding-bottom: calc(var(--section-gap) + 8px);
+    }
+
+    #gallery .section-label { color: var(--amber); }
+    #gallery .section-title { color: var(--white); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 4px;
+    }
+
+    .gallery-item {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-item:hover img { transform: scale(1.06); }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(14,14,14,0.85));
+      color: var(--white);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 24px 12px 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .gallery-item:hover .gallery-caption { opacity: 1; }
+
+    /* Vibrant colored placeholder tiles */
+    .gallery-placeholder {
+      aspect-ratio: 4 / 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.18);
+    }
+
+    .gallery-placeholder span { position: relative; z-index: 1; }
+
+    /* Each tile a different jewel tone */
+    .gallery-placeholder:nth-child(1) { background: var(--cobalt); }
+    .gallery-placeholder:nth-child(2) { background: var(--coral); }
+    .gallery-placeholder:nth-child(3) { background: var(--emerald); }
+    .gallery-placeholder:nth-child(4) { background: var(--amber); }
+    .gallery-placeholder:nth-child(5) { background: var(--violet); }
+    .gallery-placeholder:nth-child(6) { background: var(--teal); }
+
+    .gallery-hint {
+      margin-top: 16px;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--gray-mid);
+    }
+
+    /* ── FILES ───────────────────────────────────────── */
+    #files { background: var(--cream); }
+
+    #files .section-label { color: var(--emerald); }
+
+    .files-list { display: flex; flex-direction: column; gap: 3px; }
+
+    .file-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      background: var(--white);
+      color: var(--black);
+      text-decoration: none;
+      border-left: 4px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+      gap: 16px;
+    }
+
+    .file-row.pdf   { border-color: var(--coral); }
+    .file-row.zip   { border-color: var(--cobalt); }
+    .file-row.xlsx  { border-color: var(--emerald); }
+
+    .file-row:hover { background: var(--gray-light); }
+
+    .file-info { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0; }
+
+    .file-icon {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .file-row.pdf  .file-icon { background: var(--coral-light); }
+    .file-row.zip  .file-icon { background: var(--cobalt-light); }
+    .file-row.xlsx .file-icon { background: var(--emerald-light); }
+
+    .file-icon svg { width: 18px; height: 18px; }
+
+    .file-row.pdf  .file-icon svg { fill: var(--coral); }
+    .file-row.zip  .file-icon svg { fill: var(--cobalt); }
+    .file-row.xlsx .file-icon svg { fill: var(--emerald); }
+
+    .file-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--black);
+    }
+
+    .file-desc {
+      font-size: 0.72rem;
+      color: var(--gray-mid);
+      letter-spacing: 0.04em;
+    }
+
+    .file-meta { display: flex; align-items: center; gap: 24px; flex-shrink: 0; }
+
+    .file-size {
+      font-size: 0.7rem;
+      color: var(--gray-mid);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .btn-download {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: none;
+      padding: 8px 18px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+      white-space: nowrap;
+      border-radius: 2px;
+    }
+
+    .btn-download:hover { opacity: 0.82; transform: translateY(-1px); }
+
+    .file-row.pdf  .btn-download { background: var(--coral);   color: var(--white); }
+    .file-row.zip  .btn-download { background: var(--cobalt);  color: var(--white); }
+    .file-row.xlsx .btn-download { background: var(--emerald); color: var(--white); }
+
+    .files-hint {
+      margin-top: 16px;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--gray-mid);
+    }
+
+    /* ── CONTACT ─────────────────────────────────────── */
+    #contact {
+      background: linear-gradient(135deg, #1A0D35 0%, #1D2A6B 100%);
+      color: var(--white);
+    }
+
+    #contact .section-label { color: var(--amber); }
+    #contact .section-title { color: var(--white); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .contact-block {
+      padding: 32px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      transition: background 0.2s;
+    }
+
+    .contact-block:last-child { border-right: none; }
+    .contact-block:hover { background: rgba(255,255,255,0.05); }
+
+    .contact-block h4 {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    /* Each contact label gets a brand color */
+    .contact-block:nth-child(1) h4 { color: var(--coral); }
+    .contact-block:nth-child(2) h4 { color: var(--amber); }
+    .contact-block:nth-child(3) h4 { color: var(--emerald); }
+    .contact-block:nth-child(4) h4 { color: var(--cobalt); }
+
+    /* Accent left bar on hover */
+    .contact-block { position: relative; }
+    .contact-block::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0;
+      transition: width 0.25s;
+    }
+    .contact-block:nth-child(1)::before { background: var(--coral); }
+    .contact-block:nth-child(2)::before { background: var(--amber); }
+    .contact-block:nth-child(3)::before { background: var(--emerald); }
+    .contact-block:nth-child(4)::before { background: var(--cobalt); }
+    .contact-block:hover::before { width: 3px; }
+
+    .contact-block p, .contact-block a {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      line-height: 1.85;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .contact-block a:hover { color: var(--white); }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--black);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      border-top: 3px solid transparent;
+      border-image: linear-gradient(
+        to right,
+        var(--cobalt),
+        var(--violet),
+        var(--coral),
+        var(--amber),
+        var(--emerald)
+      ) 1;
+    }
+
+    footer p {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-dark);
+    }
+
+    /* ── LIGHTBOX ────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(14,14,14,0.96);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px; right: 32px;
+      color: var(--white);
+      font-size: 1.8rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox-close:hover { opacity: 1; }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 64px 20px 48px; }
+      section { padding: 56px 20px; }
+      .contact-grid { border: none; }
+      .contact-block { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      footer { flex-direction: column; justify-content: center; gap: 4px; height: auto; padding: 16px 20px; text-align: center; }
+      .file-meta { gap: 12px; }
+      .file-size { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">ETNIA Eyewear</a>
+  <ul class="nav-links">
+    <li><a href="#info">Overview</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#files">Files</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div>
+    <p class="hero-eyebrow">Customer Portal</p>
+    <h1>Welcome,<br><strong>Valued Partner.</strong></h1>
+  </div>
+  <div class="hero-meta">
+    <p>Prepared for: <span>— Your Customer Name —</span></p>
+    <p>Date: <span>September 2026</span></p>
+    <p>Reference: <span>— Project / Order Ref —</span></p>
+  </div>
+  <div class="hero-divider"></div>
+</header>
+
+<!-- INFO -->
+<section id="info">
+  <p class="section-label">Overview</p>
+  <h2 class="section-title">Project Information</h2>
+  <div class="info-grid">
+    <div class="info-card cobalt">
+      <h3>About This Delivery</h3>
+      <p>— Replace this text with a description of what you're sharing: the purpose of this package, the project context, or any relevant background for your customer. —</p>
+    </div>
+    <div class="info-card coral">
+      <h3>Scope &amp; Details</h3>
+      <p>— Describe the scope here: collection name, order details, product range, or key deliverables your customer should know about. —</p>
+    </div>
+    <div class="info-card emerald">
+      <h3>Next Steps</h3>
+      <p>— Outline any actions your customer should take after reviewing the materials: approvals needed, deadlines, feedback channels, etc. —</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <p class="section-label">Visuals</p>
+  <h2 class="section-title">Gallery</h2>
+  <div class="gallery-grid">
+    <!-- Replace .gallery-placeholder divs with .gallery-item divs containing <img> tags -->
+    <div class="gallery-placeholder"><span>Image 01</span></div>
+    <div class="gallery-placeholder"><span>Image 02</span></div>
+    <div class="gallery-placeholder"><span>Image 03</span></div>
+    <div class="gallery-placeholder"><span>Image 04</span></div>
+    <div class="gallery-placeholder"><span>Image 05</span></div>
+    <div class="gallery-placeholder"><span>Image 06</span></div>
+  </div>
+  <p class="gallery-hint">Replace the placeholder tiles with &lt;img&gt; elements pointing to your image files.</p>
+</section>
+
+<!-- FILES -->
+<section id="files">
+  <p class="section-label">Downloads</p>
+  <h2 class="section-title">Shared Files</h2>
+  <div class="files-list">
+
+    <a class="file-row pdf" href="#" download>
+      <div class="file-info">
+        <div class="file-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+        </div>
+        <div>
+          <div class="file-name">Product Catalogue 2026.pdf</div>
+          <div class="file-desc">Full collection overview — replace with your file</div>
+        </div>
+      </div>
+      <div class="file-meta">
+        <span class="file-size">— MB</span>
+        <span class="btn-download">Download</span>
+      </div>
+    </a>
+
+    <a class="file-row zip" href="#" download>
+      <div class="file-info">
+        <div class="file-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6h-2.18c.07-.33.18-.65.18-1a3 3 0 0 0-6 0c0 .35.11.67.18 1H10V4H8v2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-8-1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm8 15H6V8h2v1h2V8h4v1h2V8h2v12z"/></svg>
+        </div>
+        <div>
+          <div class="file-name">Visual Assets.zip</div>
+          <div class="file-desc">High-resolution product images — replace with your file</div>
+        </div>
+      </div>
+      <div class="file-meta">
+        <span class="file-size">— MB</span>
+        <span class="btn-download">Download</span>
+      </div>
+    </a>
+
+    <a class="file-row xlsx" href="#" download>
+      <div class="file-info">
+        <div class="file-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 9H7v-2h6v2zm4 4H7v-2h10v2z"/></svg>
+        </div>
+        <div>
+          <div class="file-name">Order Summary.xlsx</div>
+          <div class="file-desc">Pricing &amp; SKU reference sheet — replace with your file</div>
+        </div>
+      </div>
+      <div class="file-meta">
+        <span class="file-size">— MB</span>
+        <span class="btn-download">Download</span>
+      </div>
+    </a>
+
+  </div>
+  <p class="files-hint">Update the <code>href</code> attributes on each row to point to your actual files. Add or remove rows as needed.</p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">Get in Touch</p>
+  <h2 class="section-title">Contact</h2>
+  <div class="contact-grid">
+    <div class="contact-block">
+      <h4>Your Account Manager</h4>
+      <p>— Full Name —</p>
+      <a href="mailto:name@etnia.com">name@etnia.com</a>
+      <a href="tel:+34000000000">+34 000 000 000</a>
+    </div>
+    <div class="contact-block">
+      <h4>Office</h4>
+      <p>ETNIA Eyewear</p>
+      <p>— Address Line 1 —</p>
+      <p>Barcelona, Spain</p>
+    </div>
+    <div class="contact-block">
+      <h4>Support Hours</h4>
+      <p>Monday – Friday</p>
+      <p>9:00 – 18:00 CET</p>
+    </div>
+    <div class="contact-block">
+      <h4>Web</h4>
+      <a href="https://etniabarcelona.com" target="_blank" rel="noopener">etniabarcelona.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 ETNIA Eyewear. All rights reserved.</p>
+  <p>Confidential — for recipient use only.</p>
+</footer>
+
+<!-- LIGHTBOX (for gallery images) -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  document.querySelectorAll('.gallery-item img').forEach(img => {
+    img.parentElement.addEventListener('click', () => {
+      document.getElementById('lightbox-img').src = img.src;
+      document.getElementById('lightbox').classList.add('open');
+    });
+  });
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+
+</body>
+</html>
